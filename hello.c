@@ -1,6 +1,7 @@
 #include "stdio.h"
+#include <windows.h>
 
-int maint(void){
+int main(){
 	printf("Hello WOrld");
 	return 0;
 }
