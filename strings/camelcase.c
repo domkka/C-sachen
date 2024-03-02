@@ -48,7 +48,7 @@ char *camelCase(char inputString[]){
 	if(entireStringUpperCase){
 		for(int i = 0; i < strlen(inputString); i++){
 			if(i == 0){
-				result[i] = inputString[i];
+				result[j] = inputString[i];
 			}else{
 				result[j] = '_';
 				j++;
@@ -59,10 +59,10 @@ char *camelCase(char inputString[]){
 	}else{
 		for(int i = 0; i < strlen(inputString); i++){
 			if(i == 0){
-				result[i] = inputString[i];
+				result[j] = inputString[i];
 			}else{
 				if(islower(inputString[i])){
-					result[i] = inputString[i];
+					result[j] = inputString[i];
 				}else{
 					result[j] = '_';
 					j++;
