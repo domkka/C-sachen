@@ -2,17 +2,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdbool.h>
-
-typedef struct IntNode{
-	int data;
-	struct IntNode *next;
-}IntNode;
-
-IntNode *newNodeList(int data){
-	IntNode *temp = malloc(sizeof(IntNode));
-	temp->data = data;
-	temp->next = NULL;
-}
+#define max(x, y) (((x) > (y)) ? (x) : (y))
 
 typedef struct IntTree
 {
@@ -27,6 +17,28 @@ IntTree *newNode(int data)
     temp->data = data;
     temp->left = NULL;
     temp->right = NULL;
+}
+
+void printAsTree(IntTree *root, int space)
+{
+    int count = 10;
+
+    if (root == NULL)
+    {
+        return;
+    }
+
+    space += count;
+    printAsTree(root->right, space);
+
+    printf("\n");
+
+    for (int i = count; i < space; i++)
+    {
+        printf(" ");
+    }
+    printf("%d\n", root->data);
+    printAsTree(root->left, space);
 }
 
 void inOrderPrint(IntTree *head)
@@ -52,37 +64,21 @@ IntTree *createRandomTree(int treeEntries[], IntTree *node, int index, int array
     return temp;
 }
 
-IntNode *treeToList(IntTree *head, int limit){
+int maxValue(IntTree *root){
 	
-	if(head == NULL){
-		return NULL;
+	if(root == NULL){
+		return 0;
 	}
 	
-	IntNode *l1 = treeToList(head->left, limit);
-	IntNode *l2 = treeToList(head->right, limit);
+	int res = root->data;
+	int left = maxValue(root->left);
+	int right = maxValue(root->right);
 	
-	if(head->data < limit){
-		IntNode *newNode = newNodeList(head->data);
-		l1->next = newNode;
-		l1 = newNode;
-	}else{
-		IntNode *newNode = newNodeList(head->data);
-		l2->next = newNode;
-		l2 = newNode;
-	}
-	
-	
-	IntNode * temp = l1;
-	while(temp->next != NULL){
-		temp = temp->next;
-	}
-	temp->next = l2;
-	
-	return l1;
+	return max(max(left,right),res);
 }
 
-int main(){
-	IntTree *root = newNode(0);
+int main()
+{
     int upperLimit = 7;
     int entries[upperLimit];
     int *results = malloc(sizeof(int));
@@ -90,19 +86,14 @@ int main(){
     srand(time(NULL));
     for (int i = 0; i < upperLimit; i++)
     {
-        int randomEntry = rand() % (upperLimit) + 1;
+        int randomEntry = rand() % (upperLimit);
         entries[i] = randomEntry;
     }
+    IntTree *root = newNode(0);
     root = createRandomTree(entries, root, 0, upperLimit);
-	//preOrderPrint(root);
-	printf("\n");
+    printAsTree(root, 10);
+    int max = maxValue(root);
+	printf("\nMax is %d", max);
+	return 0;
 	
-	IntNode *list = treeToList(root, 2);
-	IntNode *temp = list;
-	while(temp != NULL){
-		printf("%d ", temp->data);
-		temp = temp->next;
-	}
-    inOrderPrint(root);
-    printf("\n");
 }

@@ -3,22 +3,19 @@
 #include <stdio.h>
 
 
-void derivePolynoms(int *polynoms, int *result){
-	for(int i = 0; i < 3; i++){
-		if(i == 0){
-			result[i] = 1;
-		}
-		else {
-			result[i] = (1 / i) * polynoms[i] - 1;
-		}
-		
+int *derivePolynoms(int *polynoms){
+	
+	int *result = malloc(sizeof(int)*sizeof(polynoms));
+	for (int i = 0; i < sizeof(polynoms); i++){
+		result[i] = polynoms[i] * i;
 	}
+	return result;
 }
 
 int main()
 {
-    int *polynoms = malloc(sizeof(int));
-    int *result = malloc(sizeof(int));
+    int *polynoms = malloc(sizeof(int) * 3);
+    
 
     int upperLimit = 3;
     srand(time(NULL));
@@ -37,19 +34,13 @@ int main()
         }
     }
     printf("\n");
-    derivePolynoms(polynoms, result);
-    printf("F(x) = ");
+    int *result = derivePolynoms(polynoms);
+    printf("f'(x) = ");
     for (int i = 0; i < upperLimit; i++)
     {
-
-        if (i == upperLimit - 1)
-        {
-            printf("%d * x^%d ", result[i], i + 1);
-        }
-        else if (i < upperLimit)
-        {
-            printf("%d * x^%d + ", result[i], i + 1);
-        }
+		printf("%d * x^%d +", result[i],i - 1);
     }
     printf("\n");
+	free(result);
+	return 0;
 }
